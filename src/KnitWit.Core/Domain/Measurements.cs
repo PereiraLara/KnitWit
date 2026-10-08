@@ -8,7 +8,7 @@ public static class MeasurementKeys
     public const string BodyHeight = "body-height";
     public const string FootCircumference = "foot-circumference";
     public const string FootLength = "foot-length";
-    public const string FootLengthDefault = "foot-circumference";
+    //public const string FootLengthDefault = "foot-circumference";
     //public const string FootLengthDefault = FootCircumference;
     public const string CuffHeight = "cuff-height";
 
@@ -43,9 +43,11 @@ public sealed class Measurements
 
 public static class MeasurementsExtensions
 {
-    /// <summary>User-supplied toe length, or the default. Toe and foot must both use this.</summary>
     public static double ToeLength(this Measurements m) =>
         m.GetOrDefault(MeasurementKeys.ToeLength, MeasurementKeys.ToeLengthDefaultCm);
+
     public static double FootLength(this Measurements m) =>
-        m.GetOrDefault(MeasurementKeys.FootLength, MeasurementKeys.FootLengthDefault);
+        m.Has(MeasurementKeys.FootLength)
+            ? m.Get(MeasurementKeys.FootLength)
+            : m.Get(MeasurementKeys.FootCircumference);
 }

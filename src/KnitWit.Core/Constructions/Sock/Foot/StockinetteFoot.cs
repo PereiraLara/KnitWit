@@ -16,7 +16,7 @@ public sealed class StockinetteFoot : IConstruction
     public ConstructionResult Generate(ConstructionContext c)
     {
         // subtract Toe length from the measured foot length before converting to rows
-        var lengthToKnit = c.Measurements.Get(MeasurementKeys.FootLength) - c.Measurements.ToeLength();
+        var lengthToKnit = c.Measurements.FootLength() - c.Measurements.ToeLength();
         var rounds = c.Gauge.RowsFor(lengthToKnit) - c.OverlappingRounds;
         if (rounds < 1)
             throw new InvalidOperationException("Foot length minus toe length leaves no rounds for the foot. Check the measurements.");
