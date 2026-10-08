@@ -1,0 +1,27 @@
+﻿using System.Globalization;
+using KnitWit.Core.Domain;
+
+namespace KnitWit.Core.Constructions.Sock.Leg;
+
+public sealed class StockinetteLeg : IConstruction
+{
+    public const string ConstructionId = "1x1-ribbed-leg";
+
+    public string Id => ConstructionId;
+    public string DisplayName => "1x1 ribbed leg";
+    public GarmentType GarmentType => GarmentType.Sock;
+    public string SectionId => SockSections.Leg;
+
+    public IReadOnlyCollection<string> RequiredMeasurements { get; } = [MeasurementKeys.LegHeight];
+
+    public ConstructionResult Generate(ConstructionContext c)
+    {
+        var rounds = c.Gauge.RowsFor(c.Measurements.Get(MeasurementKeys.LegHeight)) - c.OverlappingRounds;
+        var steps = new List<string>
+        {
+            $"row 1-{rounds} - k to the end of round [{c.StitchesIn} sts]."
+        };
+
+        return new ConstructionResult(steps, c.StitchesIn, 0);
+    }
+}
