@@ -6,7 +6,7 @@ namespace KnitWit.Core.Tests;
 
 public class ToeTests
 {
-    private static readonly string[] Toes = ["star-toe", "wedge-toe", "round-toe"];
+    private static readonly string[] Toes = ["star-toe", "round-toe", "wedge-toe"];
 
     [Fact]
     public void Every_toe_closes_correctly_across_gauges_and_foot_sizes()

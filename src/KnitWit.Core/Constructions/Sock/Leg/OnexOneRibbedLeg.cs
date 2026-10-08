@@ -16,7 +16,7 @@ public sealed class OnexOneRibbedLeg : IConstruction
 
     public ConstructionResult Generate(ConstructionContext c)
     {
-        var rounds = c.Gauge.RowsFor(c.Measurements.Get(MeasurementKeys.LegHeight)) - c.OverlappingRounds;
+        var rounds = c.Gauge.RowsFor(c.Measurements.Get(MeasurementKeys.LegHeight)) - c.OverlappingRounds - c.Gauge.RowsFor(c.Measurements.Get(MeasurementKeys.CuffHeight));
         var steps = new List<string> 
         {
             $"row 1-{rounds} - Work in 1x1 rib (k1, p1) to the end of round [{c.StitchesIn} sts]." 
