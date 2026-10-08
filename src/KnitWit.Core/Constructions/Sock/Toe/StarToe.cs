@@ -1,5 +1,4 @@
 ﻿using KnitWit.Core.Domain;
-using System.Numerics;
 
 namespace KnitWit.Core.Constructions.Sock.Toe;
 
@@ -12,14 +11,14 @@ public sealed class StarToe : IConstruction
     public GarmentType GarmentType => GarmentType.Sock;
     public string SectionId => SockSections.Toe;
 
-    public IReadOnlyCollection<string> RequiredMeasurements { get; } = [];
+    public IReadOnlyCollection<string> RequiredMeasurements { get; } = []; 
 
     public ConstructionResult Generate(ConstructionContext c)
     {
-        if (c.StitchesIn < 16) throw new InvalidOperationException( $"Star toe needs an even stitch count of at least 12, got {c.StitchesIn}.");
+        if (c.StitchesIn < 16) throw new InvalidOperationException( $"Star toe needs an even stitch count of at least 16, got {c.StitchesIn}.");
         int extra = c.StitchesIn % 4;                 // 0 or 2: stitches to remove so the 4 wedges divide evenly
 
-        int rounds = c.Gauge.RowsFor(4.5);
+        int rounds = c.Gauge.RowsFor(c.Measurements.ToeLength());
         if (rounds < 1)
             throw new InvalidOperationException("Gauge gives a toe length of 0 rounds. Check the gauge.");
 

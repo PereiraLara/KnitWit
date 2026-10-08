@@ -7,10 +7,15 @@ public static class MeasurementKeys
     public const string BrimHeight = "brim-height";
     public const string BodyHeight = "body-height";
     public const string FootCircumference = "foot-circumference";
+    public const string FootLength = "foot-length";
+    public const string FootLengthDefault = "foot-circumference";
+    //public const string FootLengthDefault = FootCircumference;
     public const string CuffHeight = "cuff-height";
 
     // If you want a default value for cuff height (in cm  ), use a separate constant:
-    public const double CuffHeightDefaultCm = 4.5;
+    public const double CuffHeightDefaultCm = 4;
+    public const double ToeLengthDefaultCm = 4.5;
+    public const string ToeLength = "toe-length";
 
     public const string LegHeight = "leg-height";
 }
@@ -32,4 +37,15 @@ public sealed class Measurements
         _values.TryGetValue(key, out var cm)
             ? cm
             : throw new KeyNotFoundException($"Missing measurement '{key}'.");
+    public double GetOrDefault(string key, double defaultCm) =>
+        _values.TryGetValue(key, out var cm) ? cm : defaultCm;
+}
+
+public static class MeasurementsExtensions
+{
+    /// <summary>User-supplied toe length, or the default. Toe and foot must both use this.</summary>
+    public static double ToeLength(this Measurements m) =>
+        m.GetOrDefault(MeasurementKeys.ToeLength, MeasurementKeys.ToeLengthDefaultCm);
+    public static double FootLength(this Measurements m) =>
+        m.GetOrDefault(MeasurementKeys.FootLength, MeasurementKeys.FootLengthDefault);
 }

@@ -12,12 +12,15 @@ public sealed class StockinetteFoot : IConstruction
     public GarmentType GarmentType => GarmentType.Sock;
     public string SectionId => SockSections.Foot;
 
-    public IReadOnlyCollection<string> RequiredMeasurements { get; } = new[] { MeasurementKeys.FootCircumference };
+    public IReadOnlyCollection<string> RequiredMeasurements { get; } = [];
     public ConstructionResult Generate(ConstructionContext c)
     {
-        // subtract 4.5 cm from the measured foot circumference before converting to rows
-        var footCircumference = c.Measurements.Get(MeasurementKeys.FootCircumference) - 4.5;
-        var rounds = c.Gauge.RowsFor(footCircumference) - c.OverlappingRounds;
+        // subtract Toe length from the measured foot length before converting to rows
+        var lengthToKnit = c.Measurements.Get(MeasurementKeys.FootLength) - c.Measurements.ToeLength();
+        var rounds = c.Gauge.RowsFor(lengthToKnit) - c.OverlappingRounds;
+        if (rounds < 1)
+            throw new InvalidOperationException("Foot length minus toe length leaves no rounds for the foot. Check the measurements.");
+
         var steps = new List<string>
         {
             $"row 1-{rounds} - k to the end of round [{c.StitchesIn} sts]."

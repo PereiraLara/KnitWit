@@ -15,7 +15,7 @@ public sealed class RoundToe : IConstruction
 
     public ConstructionResult Generate(ConstructionContext c)
     {
-        int rounds = c.Gauge.RowsFor(4.5);
+        int rounds = c.Gauge.RowsFor(c.Measurements.ToeLength());
         //if (rounds < c.StitchesIn * 3 / 16 || rounds > c.StitchesIn * 3 / 8)
         //    throw new InvalidOperationException("Gauge and stitch count give a toe length that can't be decreased evenly. Check the gauge.");
 
