@@ -1,4 +1,5 @@
 ﻿using KnitWit.Core.Domain;
+using System.Numerics;
 
 namespace KnitWit.Core.Constructions.Sock.Toe;
 
@@ -15,41 +16,64 @@ public sealed class StarToe : IConstruction
 
     public ConstructionResult Generate(ConstructionContext c)
     {
+        if (c.StitchesIn < 16) throw new InvalidOperationException( $"Star toe needs an even stitch count of at least 12, got {c.StitchesIn}.");
+        int extra = c.StitchesIn % 4;                 // 0 or 2: stitches to remove so the 4 wedges divide evenly
+
         int rounds = c.Gauge.RowsFor(4.5);
+        if (rounds < 1)
+            throw new InvalidOperationException("Gauge gives a toe length of 0 rounds. Check the gauge.");
+
         var steps = new List<string> ();
         int row = 0;
 
         int PossDecr = (c.StitchesIn - 8) / 4;    // possible decreases, 4 decreased stitches per round, 8 stitches left for the last round
-        bool Kitchner = rounds < PossDecr;  // if the number of rounds is less than the possible decreases, we can kitchner stitch the last round as there'll be more than 8 stitches left.
+        bool Kitchner = rounds < PossDecr;  // toe too short to get down to 8 sts: more stitches are left, so Kitchener stitch the last round
+
+        int decreaseRounds = Math.Min(PossDecr, rounds);
+
+        int neededPlainRounds = rounds - decreaseRounds; // the number of plain rounds needed to reach the desired length
+
+        int leadingPlainRounds = Math.Max(0, neededPlainRounds - (decreaseRounds - 1));
+        int pairedPlainRounds = neededPlainRounds - leadingPlainRounds;
+        int tailRepeats = decreaseRounds - 1 - pairedPlainRounds;   // decrease-only rounds at the end
+
+        if (leadingPlainRounds > 0)
+        {
+            steps.Add(leadingPlainRounds == 1
+                ? $"row {++row} - k to the end of round."
+                : $"row {row + 1}-{row += leadingPlainRounds} - k to the end of round.");
+        }
+
+        if (extra > 0)
+        {
+            steps.Add($"setup row - * k{c.StitchesIn / extra - 2}, k2tog; repeat from * {extra - 1} times. [{extra} sts decreased]");
+            rounds--;
+        }
 
         steps.Add($"setup row - * k{c.StitchesIn/4 - 2}, place marker, k2tog, repeat from * to beginning of round. [4 sts decreased]");
+        const string decrease = "* k to 2 sts before the marker, k2tog, slip marker; repeat from * to end of round. [4 sts decreased]";
 
-        if(Kitchner)
+        if (pairedPlainRounds > 0)
         {
-            steps.AddRange(new List<string>
-            {
-                $"row {++row} - * k to 2 sts before the marker, slip marker, k2tog, repeat from * to beginning of round.",
-                $"repeat row {row} a total of {rounds - 1} times. [{c.StitchesIn - rounds / 4} sts]",
-                $"Fasten off and Kitchener Stitch."
-            });
+            steps.Add($"row {++row} - k to the end of round.");
+            steps.Add($"row {++row} - {decrease}");
+            if (pairedPlainRounds > 1)
+                steps.Add($"repeat rows {row - 1}-{row} {pairedPlainRounds - 1} more times. [{c.StitchesIn - 4 * (1 + pairedPlainRounds)} sts]");
+        }
+        else if (tailRepeats > 0)
+        {
+            steps.Add($"row {++row} - {decrease}");
+            tailRepeats--;   // this row is the first decrease-only round
         }
 
-        int neededPlainRounds = rounds - PossDecr; // the number of plain rounds needed to reach the desired length
-        if(neededPlainRounds > 0)
-        {
-            steps.Add( $"row {++row} - k to the end of round.");
-        }
+        if (tailRepeats > 0)
+            steps.Add($"repeat row {row} {tailRepeats} more times. [{c.StitchesIn - 4 * decreaseRounds} sts]");
 
-        steps.Add($"row {++row} - * k to 2 sts before the marker, slip marker, k2tog, repeat from * to beginning of round. [4 sts decreased]");
+        steps.Add(Kitchner
+            ? $"Fasten off and graft the remaining {c.StitchesIn - 4 * decreaseRounds} stitches with Kitchener Stitch."
+            : $"Thread yarn through the remaining {c.StitchesIn - 4 * decreaseRounds} stitches, draw closed, and secure."
+        );
 
-        if (neededPlainRounds > 0) steps.Add($"repeat row {row - 1} and {row} a total of {neededPlainRounds} times. [{c.StitchesIn - neededPlainRounds * 4} sts]");
-        steps.Add($"repeat row {row} a total of {rounds - neededPlainRounds * 2 - 1} times. [{c.StitchesIn - neededPlainRounds * 4 - (rounds - neededPlainRounds * 2 - 1) * 4} sts]");
-
-        steps.AddRange(new List<string>
-        {
-            $"Thread yarn through remaining stitches, draw closed, and secure."
-        });
-
-        return new ConstructionResult(steps, c.StitchesIn - (rounds - rounds / 4) * 4, 0);
+        return new ConstructionResult(steps, c.StitchesIn - 4 * decreaseRounds, 0);
     }
 }
