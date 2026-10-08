@@ -37,9 +37,7 @@ docs/ADDING_CONSTRUCTIONS.md       how to extend it
 - A **garment** is an ordered list of **sections** (hat: brim, body, crown).
 - Each section has several **constructions** to choose from (sock heel: heel flap / German short rows).
 - A construction receives gauge, measurements, and the stitch count from the previous section, and returns
-  steps, the stitch count it hands on, and a **sketch layer**.
-- Sketch layers are isolated SVG fragments stacked by `ZOrder`, which is the hook for the layerable
-  sweater parts (necklines, sleeves, body...). `ISketchRenderer` is the seam for a later 3D renderer.
+  steps and the stitch count it hands on.
 
 ## Not here yet (deliberately)
 
