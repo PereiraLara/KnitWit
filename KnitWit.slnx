@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/KnitWit.Core/KnitWit.Core.csproj" />
+    <Project Path="src/KnitWit.Api/KnitWit.Api.csproj" />
     <Project Path="src/KnitWit.Cli/KnitWit.Cli.csproj" />
   </Folder>
   <Folder Name="/tests/">

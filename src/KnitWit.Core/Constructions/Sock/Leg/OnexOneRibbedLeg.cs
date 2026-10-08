@@ -5,10 +5,10 @@ namespace KnitWit.Core.Constructions.Sock.Leg;
 
 public sealed class OnexOneRibbedLeg : IConstruction
 {
-    public const string ConstructionId = "stockinette-leg";
+    public const string ConstructionId = "1x1-ribbed-leg";
 
     public string Id => ConstructionId;
-    public string DisplayName => "stockinette leg";
+    public string DisplayName => "1x1 ribbed leg";
     public GarmentType GarmentType => GarmentType.Sock;
     public string SectionId => SockSections.Leg;
 

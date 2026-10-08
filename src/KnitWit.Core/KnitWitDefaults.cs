@@ -17,31 +17,55 @@ namespace KnitWit.Core;
 /// </summary>
 public static class KnitWitDefaults
 {
-    public static PatternGenerator CreateGenerator()
-    {
-        var garments = new GarmentRegistry()
-            .Register(new HatGarment())
-            .Register(new SockGarment());
+    public static GarmentRegistry CreateGarments() => new GarmentRegistry()
+    .Register(new HatGarment())
+    .Register(new SockGarment());
 
-        var constructions = new ConstructionRegistry()
-            .Register(new RibbedBrim())
-            .Register(new StraightBody())
-            .Register(new RadialDecreaseCrown())
-            .Register(new OnexOneRibbedCuff())
-            .Register(new TwoxTwoRibbedCuff())
-            .Register(new TwistedRibbedCuff())
-            .Register(new StockinetteLeg())
-            .Register(new OnexOneRibbedLeg())
-            .Register(new ShortRowHeel())
-            .Register(new HeelFlap_Gusset())
-            .Register(new StockinetteFoot())
-            .Register(new OnexOneRibbedFoot())
-            .Register(new RoundToe())
-            .Register(new WedgeToe())
-            .Register(new StarToe())
-            //.Register(new ShortRowToe())
-            ;
+    public static ConstructionRegistry CreateConstructions() => new ConstructionRegistry()
+        .Register(new RibbedBrim())
+        .Register(new StraightBody())
+        .Register(new RadialDecreaseCrown())
+        .Register(new OnexOneRibbedCuff())
+        .Register(new TwoxTwoRibbedCuff())
+        .Register(new TwistedRibbedCuff())
+        .Register(new StockinetteLeg())
+        .Register(new OnexOneRibbedLeg())
+        .Register(new ShortRowHeel())
+        .Register(new HeelFlap_Gusset())
+        .Register(new StockinetteFoot())
+        .Register(new OnexOneRibbedFoot())
+        .Register(new RoundToe())
+        .Register(new WedgeToe())
+        .Register(new StarToe());
 
-        return new PatternGenerator(garments, constructions);
-    }
+    public static PatternGenerator CreateGenerator() =>
+        new(CreateGarments(), CreateConstructions());
+
+    //    public static PatternGenerator CreateGenerator()
+    //    {
+    //        var garments = new GarmentRegistry()
+    //            .Register(new HatGarment())
+    //            .Register(new SockGarment());
+
+    //        var constructions = new ConstructionRegistry()
+    //            .Register(new RibbedBrim())
+    //            .Register(new StraightBody())
+    //            .Register(new RadialDecreaseCrown())
+    //            .Register(new OnexOneRibbedCuff())
+    //            .Register(new TwoxTwoRibbedCuff())
+    //            .Register(new TwistedRibbedCuff())
+    //            .Register(new StockinetteLeg())
+    //            .Register(new OnexOneRibbedLeg())
+    //            .Register(new ShortRowHeel())
+    //            .Register(new HeelFlap_Gusset())
+    //            .Register(new StockinetteFoot())
+    //            .Register(new OnexOneRibbedFoot())
+    //            .Register(new RoundToe())
+    //            .Register(new WedgeToe())
+    //            .Register(new StarToe())
+    //            //.Register(new ShortRowToe())
+    //            ;
+
+    //        return new PatternGenerator(garments, constructions);
+    //    }
 }

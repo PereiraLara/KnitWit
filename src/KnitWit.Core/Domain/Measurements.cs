@@ -10,7 +10,7 @@ public static class MeasurementKeys
     public const string CuffHeight = "cuff-height";
 
     // If you want a default value for cuff height (in cm  ), use a separate constant:
-    public const double CuffHeightDefaultCm = 5;
+    public const double CuffHeightDefaultCm = 4.5;
 
     public const string LegHeight = "leg-height";
 }

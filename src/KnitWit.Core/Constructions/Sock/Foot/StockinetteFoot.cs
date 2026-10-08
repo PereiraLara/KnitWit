@@ -12,8 +12,7 @@ public sealed class StockinetteFoot : IConstruction
     public GarmentType GarmentType => GarmentType.Sock;
     public string SectionId => SockSections.Foot;
 
-    //public IReadOnlyCollection<string> RequiredMeasurements { get; } = new[] { MeasurementKeys.FootCircumference };
-    public IReadOnlyCollection<string> RequiredMeasurements { get; } = [MeasurementKeys.LegHeight];
+    public IReadOnlyCollection<string> RequiredMeasurements { get; } = new[] { MeasurementKeys.FootCircumference };
     public ConstructionResult Generate(ConstructionContext c)
     {
         // subtract 4.5 cm from the measured foot circumference before converting to rows

@@ -13,8 +13,7 @@ public sealed class OnexOneRibbedCuff : IConstruction
     public GarmentType GarmentType => GarmentType.Sock;
     public string SectionId => SockSections.Cuff;
 
-    public IReadOnlyCollection<string> RequiredMeasurements { get; } =
-        [MeasurementKeys.FootCircumference, MeasurementKeys.CuffHeight];
+    public IReadOnlyCollection<string> RequiredMeasurements { get; } = [MeasurementKeys.FootCircumference, MeasurementKeys.CuffHeight];
 
     public ConstructionResult Generate(ConstructionContext c)
     {

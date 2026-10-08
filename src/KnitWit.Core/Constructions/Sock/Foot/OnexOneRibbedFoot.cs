@@ -8,12 +8,11 @@ public sealed class OnexOneRibbedFoot : IConstruction
     public const string ConstructionId = "1x1-ribbed-foot";
 
     public string Id => ConstructionId;
-    public string DisplayName => "1x1-ribbed-cuff";
+    public string DisplayName => "1x1-ribbed-foot";
     public GarmentType GarmentType => GarmentType.Sock;
     public string SectionId => SockSections.Foot;
 
-    //public IReadOnlyCollection<string> RequiredMeasurements { get; } = new[] { MeasurementKeys.FootCircumference };
-    public IReadOnlyCollection<string> RequiredMeasurements { get; } = [MeasurementKeys.LegHeight];
+    public IReadOnlyCollection<string> RequiredMeasurements { get; } = new[] { MeasurementKeys.FootCircumference };
     public ConstructionResult Generate(ConstructionContext c)
     {
         // subtract 4.5 cm from the measured foot circumference before converting to rows

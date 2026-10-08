@@ -20,8 +20,8 @@ public sealed class PleatedCrown : IConstruction
         var steps = new List<string>();
         // c.Gauge, c.Measurements, c.StitchesIn are your inputs
         // ... do the maths, add steps ...
-        var layer = new SketchLayer("hat-crown", 30, "<path d='...'/>"); // draw inside c.Slot
-        return new ConstructionResult(steps, StitchesOut: 8, layer);
+      
+        return new ConstructionResult(steps, StitchesOut: 8);
     }
 }
 ```
@@ -48,14 +48,6 @@ Rules of thumb: take everything from `ConstructionContext` (no globals), list ev
 3. Add measurement keys to `MeasurementKeys` (foot circumference, foot length, ...).
 4. Add constructions per section (see A). For a section with several options, add several classes
    with the same `SectionId` and different `Id`s (`heel-flap`, `german-short-rows`).
-5. Add `Garments/SockGarment.cs` implementing `IGarment`: list sections in knitting order, each with a
-   default construction id and a `SketchSlot` on the 200x300 canvas.
+5. Add `Garments/SockGarment.cs` implementing `IGarment`: list sections in knitting order, each with a default construction id 
 6. Register the garment and its constructions in `KnitWitDefaults`.
 7. Add a test in `tests/KnitWit.Core.Tests` that generates the pattern and checks stitch counts.
-
-## C. Layered sweater sketches (when you get there)
-
-Each construction returns one `SketchLayer` with its own `Id` and `ZOrder`. A raglan sleeve and a set-in
-sleeve are just two constructions for the `sleeve` section that draw different fragments, and
-`SvgSketchRenderer` stacks whatever was chosen. For a richer look, replace the fragment with an embedded
-SVG asset per part, or implement a new `ISketchRenderer` (3D mesh) that consumes the same layers/slots.
